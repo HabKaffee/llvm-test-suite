@@ -2,7 +2,7 @@
 
 // RUN: %clangxx -fsycl -fsycl-targets=spir64_x86_64 %S/Inputs/common.cpp -o %t.out \
 // RUN:          -fsycl-dead-args-optimization
-// RUN: %CPU_RUN_PLACEHOLDER %t.out | FileCheck %t
+// RUN: %CPU_RUN_PLACEHOLDER %t.out | FileCheck %t.out
 
 #include <cmath>
 #include <sycl/sycl.hpp>
