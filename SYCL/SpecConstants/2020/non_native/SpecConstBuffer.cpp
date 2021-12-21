@@ -4,19 +4,16 @@
 // RUN:          -fsycl-dead-args-optimization
 // RUN: env SYCL_PI_TRACE=-1 %CPU_RUN_PLACEHOLDER %t.out | FileCheck %s
 
-#include <cmath>
 #include <sycl/sycl.hpp>
 
-class Kernel1Name;
-
-const static sycl::specialization_id<int> SpecConst2{42};
+const static sycl::specialization_id<int> SpecConst{42};
 
 int main() {
   sycl::queue Q;
   Q.submit([&](sycl::handler &CGH) {
-    CGH.set_specialization_constant<SpecConst2>(1);
-    CGH.single_task<class Kernel1Name>([=](sycl::kernel_handler KH) {
-      (void)KH.get_specialization_constant<SpecConst2>();
+    CGH.set_specialization_constant<SpecConst>(1);
+    CGH.single_task<class KernelName>([=](sycl::kernel_handler KH) {
+      (void)KH.get_specialization_constant<SpecConst>();
     });
   });
   Q.wait();
