@@ -185,7 +185,7 @@ int main() {
     // CHECK-NEXT: <unknown> : {{.*}}
     // CHECK-NEXT: <unknown> : {{.*}}
     // CHECK-NEXT: <unknown> : {{.*}}
-    // CHECK-NEXT: <nullptr>
+    // CHECK-NEXT: <const char *>:
     // CHECK-NEXT: <unknown> : {{.*}}
     // CHECK-NEXT: <unknown> : {{.*}}
     // CHECK-NEXT: <nullptr>
