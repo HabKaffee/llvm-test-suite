@@ -24,11 +24,15 @@ namespace esimd_test::api::functional::operators {
 
 // The main test routine.
 // Using functor class to be able to iterate over the pre-defined data types.
-template <typename DataT, typename DimT, typename TestCaseT> class run_test {
-  static constexpr int NumElems = DimT::value;
+template <typename DataT, typename SizeT, typename TestCaseT> class run_test {
+  static constexpr int NumElems = SizeT::value;
 
 public:
   bool operator()(sycl::queue &queue, const std::string &data_type) {
+    if (should_skip_test_with<DataT>(queue.get_device())) {
+      return true;
+    }
+
     bool passed = true;
     const std::vector<DataT> ref_data = generate_ref_data<DataT, NumElems>();
 
