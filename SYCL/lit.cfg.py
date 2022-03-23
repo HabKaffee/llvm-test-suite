@@ -97,6 +97,9 @@ config.substitutions.append( ('%sycl_include',  config.sycl_include ) )
 if lit_config.params.get('gpu-intel-dg1', False):
     config.available_features.add('gpu-intel-dg1')
 
+if lit_config.params.get('gpu-intel-pvc', False):
+    config.available_features.add('gpu-intel-pvc')
+
 if lit_config.params.get('matrix', False):
     config.available_features.add('matrix')
 
@@ -241,8 +244,12 @@ if sycl_hpp_available[0] != 0:
                     '\nUsing fake sycl/sycl.hpp (which just points to CL/sycl.hpp)')
     extra_sycl_include = " " + ("/I" if cl_options else "-I") + config.extra_include
 
-config.substitutions.append( ('%clangxx', ' '+ config.dpcpp_compiler + ' ' + config.cxx_flags + ' ' + arch_flag + extra_sycl_include) )
-config.substitutions.append( ('%clang', ' ' + config.dpcpp_compiler + ' ' + config.c_flags + extra_sycl_include) )
+if lit_config.params.get('compatibility_testing', False):
+    config.substitutions.append( ('%clangxx', ' true ') )
+    config.substitutions.append( ('%clang', ' true ') )
+else:
+    config.substitutions.append( ('%clangxx', ' '+ config.dpcpp_compiler + ' ' + config.cxx_flags + ' ' + arch_flag + extra_sycl_include) )
+    config.substitutions.append( ('%clang', ' ' + config.dpcpp_compiler + ' ' + config.c_flags + extra_sycl_include) )
 
 config.substitutions.append( ('%threads_lib', config.sycl_threads_lib) )
 
@@ -393,7 +400,7 @@ if find_executable('cmc'):
 
 # Device AOT compilation tools aren't part of the SYCL project,
 # so they need to be pre-installed on the machine
-aot_tools = ["ocloc", "aoc", "opencl-aot"]
+aot_tools = ["ocloc", "opencl-aot"]
 
 for aot_tool in aot_tools:
     if find_executable(aot_tool) is not None:
